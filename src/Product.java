@@ -1,15 +1,17 @@
+import java.math.BigDecimal;
+
 public class Product implements Promotion {
     private final String name;
-    private final int price;
+    private final BigDecimal price;
     private final int weight;
 
-    public Product (String name, int price, int weight) {
+    public Product (String name, BigDecimal price, int weight) {
         this.name = name;
         this.price = price;
         this.weight = weight;
     }
 
-    public int getPrice(){
+    public BigDecimal getPrice(){
         return this.price;
     }
 
@@ -17,14 +19,14 @@ public class Product implements Promotion {
         return this.weight;
     }
 
-    public Integer getDiscountAmount() {
-        int discountAmount = 0;
+    public BigDecimal getDiscountAmount() {
+        BigDecimal discountAmount;
 
-        if (this.name.equals("grocery")) {
-            discountAmount = 2000;
-        } else if (this.name.equals("beauty")) {
-            discountAmount = 10000;
-        }
+        discountAmount = BigDecimal.valueOf( switch (this.name) {
+            case "grocery" -> 2000;
+            case "beauty" -> 10000;
+            default -> 0;
+        });
 
         return discountAmount;
     }

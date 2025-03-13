@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+
 public class Cart{
     Product[] products;
 
@@ -5,35 +7,36 @@ public class Cart{
         this.products = products;
     }
 
-    int calculateDeliveryCharge() {
+    BigDecimal calculateDeliveryCharge() {
         int totalWeight = 0;
-        int totalPrice = 0;
+        BigDecimal totalPrice = new BigDecimal(0);
 
-        int deliveryDiscount;
-        int deliveryCharge;
+        BigDecimal deliveryDiscount;
+        BigDecimal deliveryCharge;
 
-        for (int i=0; i<products.length; i++) {
-            totalWeight = totalWeight + products[i].getWeight();
-            totalPrice = totalPrice + products[i].getPrice() - products[i].getDiscountAmount();
+        for (Product product : products) {
+            totalWeight = totalWeight + product.getWeight();
+            totalPrice = totalPrice.add(product.getPrice())
+                        .subtract(product.getDiscountAmount());
         }
 
         if (totalWeight < 3) {
-            deliveryCharge = 1000;
+            deliveryCharge = BigDecimal.valueOf(1000);
         } else if (totalWeight < 10) {
-            deliveryCharge = 5000;
+            deliveryCharge = BigDecimal.valueOf(5000);
         } else {
-            deliveryCharge = 10000;
+            deliveryCharge = BigDecimal.valueOf(10000);
         }
 
-        if (totalPrice < 30000) {
-            deliveryDiscount = 0;
-        } else if (totalPrice < 100000) {
-            deliveryDiscount = 1000;
+        if (totalPrice.compareTo(BigDecimal.valueOf(30000)) < 0) {
+            deliveryDiscount = BigDecimal.valueOf(0);
+        } else if (totalPrice.compareTo(BigDecimal.valueOf(100000)) < 0) {
+            deliveryDiscount = BigDecimal.valueOf(1000);
         } else {
             deliveryDiscount = deliveryCharge;
         }
 
-        deliveryCharge = deliveryCharge - deliveryDiscount;
+        deliveryCharge = deliveryCharge.subtract(deliveryDiscount);
 
         return deliveryCharge;
     }

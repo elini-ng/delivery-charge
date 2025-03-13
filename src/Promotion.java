@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+
 public interface Promotion {
-    Integer getDiscountAmount();
+    BigDecimal getDiscountAmount();
 }
